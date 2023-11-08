@@ -1,14 +1,27 @@
 const imageContainer = document.getElementById('image-container');
 const loader = document.getElementById('loader');
 
+let ready = false;
+let imagesLoaded = 0;
+let totalImages = 0;
 let photosArray = [];
 
 // Unsplash API
 
-const count = 10;
+const count = 30;
 const apiKey = SECRET;
 const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
 
+//Check if all images were loaded
+function imageLoaded() {    
+    imagesLoaded++;
+    console.log('imagesLoaded', imagesLoaded)
+    if (imagesLoaded === totalImages) {
+        ready = true;
+        loader.hidden = true;
+        console.log('ready = ', ready)
+    }
+}
 //Helper function to set Attributes on DOM Elements
 
 function setAttributes(element, attributes) {
@@ -19,6 +32,10 @@ function setAttributes(element, attributes) {
 
 //Create Element for links and photos, add to DOM
 function displayPhotos() {
+    imagesLoaded = 0; //we have to reset this after every time 30 photos were loaded to avoid 30+30
+    totalImages = photosArray.length
+    console.log('totalImages', totalImages)
+
     photosArray.forEach((photo) => {
         //Create <a> to link to Unsplash
         const item = document.createElement('a');
@@ -40,6 +57,9 @@ function displayPhotos() {
             title: photo.alt_description
         })
 
+        //Event Listener, check when each is finished loading
+        img.addEventListener('load', imageLoaded);
+
         //Put <img> inside <a>, then put both inside imageContainer Element
         item.appendChild(img);   
         imageContainer.appendChild(item);
@@ -58,15 +78,16 @@ async function getPhotos() {
     }
 }
 
-//Check to see if scrolling near buttom of a page, Load more photos. Window is highest level - it is a parent of a document a nd a grand parent of a body
-    window.addEventListener('scroll', () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {        
+//Check to see if scrolling near buttom of a page, Load more photos. Window is highest level - it is a parent of a document and a grand parent of a body
+    window.addEventListener('scroll', () => {       
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {        
             // console.log('scrolled');
             // console.log('window.innerHeight', window.innerHeight);
             // console.log('window.scrollY', window.scrollY);
             // console.log('window.innerHeight + window.scrollY', window.innerHeight + window.scrollY)
             // console.log('document.body.offsetHeight', document.body.offsetHeight);
             // console.log('document.body.offsetHeight - 1000', document.body.offsetHeight - 1000);       
+            ready = false;
             getPhotos();
             console.log('Load more')
         };
