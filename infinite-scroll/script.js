@@ -52,11 +52,24 @@ async function getPhotos() {
         const response = await fetch(apiUrl);
         photosArray = await response.json();
         displayPhotos()
-        console.log("photosArray", photosArray)
+        //console.log("photosArray", photosArray)
     } catch (error) {
         //Catch Error Here
     }
 }
 
+//Check to see if scrolling near buttom of a page, Load more photos. Window is highest level - it is a parent of a document a nd a grand parent of a body
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {        
+            // console.log('scrolled');
+            // console.log('window.innerHeight', window.innerHeight);
+            // console.log('window.scrollY', window.scrollY);
+            // console.log('window.innerHeight + window.scrollY', window.innerHeight + window.scrollY)
+            // console.log('document.body.offsetHeight', document.body.offsetHeight);
+            // console.log('document.body.offsetHeight - 1000', document.body.offsetHeight - 1000);       
+            getPhotos();
+            console.log('Load more')
+        };
+    })
 //On Load
 getPhotos();
