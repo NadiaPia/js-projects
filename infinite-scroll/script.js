@@ -8,18 +8,18 @@ let photosArray = [];
 
 // Unsplash API
 
-const count = 30;
+let quantityLoadedPhotos = 5; //for the case of lower Internet we can decrease a quantity of photos initially,but after, they loaded, we can increase this number (look at the imageLoaded() function)
 const apiKey = SECRET;
-const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
+let apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${quantityLoadedPhotos}`;
 
 //Check if all images were loaded
 function imageLoaded() {    
     imagesLoaded++;
-    console.log('imagesLoaded', imagesLoaded)
+    //console.log('imagesLoaded', imagesLoaded)
     if (imagesLoaded === totalImages) {
         ready = true;
         loader.hidden = true;
-        console.log('ready = ', ready)
+        quantityLoadedPhotos = 30;       
     }
 }
 //Helper function to set Attributes on DOM Elements
@@ -34,7 +34,7 @@ function setAttributes(element, attributes) {
 function displayPhotos() {
     imagesLoaded = 0; //we have to reset this after every time 30 photos were loaded to avoid 30+30
     totalImages = photosArray.length
-    console.log('totalImages', totalImages)
+    //console.log('totalImages', totalImages)
 
     photosArray.forEach((photo) => {
         //Create <a> to link to Unsplash
