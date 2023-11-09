@@ -5,21 +5,24 @@ let ready = false;
 let imagesLoaded = 0;
 let totalImages = 0;
 let photosArray = [];
+let initialLoad = true;
 
 // Unsplash API
 
-let quantityLoadedPhotos = 5; //for the case of lower Internet we can decrease a quantity of photos initially,but after, they loaded, we can increase this number (look at the imageLoaded() function)
+let initialCount = 5; //for the case of lower Internet we can decrease a quantity of photos initially,but after, they loaded, we can increase this number (look at the imageLoaded() function)
 const apiKey = SECRET;
-let apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${quantityLoadedPhotos}`;
+let apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${initialCount}`;
+
+function updateAPIURLWithNewCount (picCount) {
+    apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${picCount}`;
+};
 
 //Check if all images were loaded
 function imageLoaded() {    
     imagesLoaded++;
-    //console.log('imagesLoaded', imagesLoaded)
     if (imagesLoaded === totalImages) {
         ready = true;
-        loader.hidden = true;
-        quantityLoadedPhotos = 30;       
+        loader.hidden = true;       
     }
 }
 //Helper function to set Attributes on DOM Elements
@@ -34,8 +37,7 @@ function setAttributes(element, attributes) {
 function displayPhotos() {
     imagesLoaded = 0; //we have to reset this after every time 30 photos were loaded to avoid 30+30
     totalImages = photosArray.length
-    //console.log('totalImages', totalImages)
-
+   
     photosArray.forEach((photo) => {
         //Create <a> to link to Unsplash
         const item = document.createElement('a');
@@ -71,7 +73,11 @@ async function getPhotos() {
     try {
         const response = await fetch(apiUrl);
         photosArray = await response.json();
-        displayPhotos()
+        displayPhotos();
+        if (initialLoad) {
+            updateAPIURLWithNewCount(30);
+            initialLoad = false;
+        }
         //console.log("photosArray", photosArray)
     } catch (error) {
         //Catch Error Here
