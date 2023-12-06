@@ -13,21 +13,20 @@ const textBox = document.getElementById('text-box');
     textBox.style.backgroundColor = "rgb(255 255 255 / 50%)";
     //console.log("toggleIcon.children", toggleIcon.children) //in html span + icon
     toggleIcon.children[0].textContent = 'Dark Mode';  //span
-    toggleIcon.children[1].classList.remove('fas-sun');  //icon
-    toggleIcon.children[1].classList.add('fas-moon');  //icon
+    toggleIcon.children[1].classList.remove('fa-sun');  //icon
+    toggleIcon.children[1].classList.add('fa-moon');  //icon
     image1.src = 'img/undraw_proud_coder_dark.svg';
     image2.src = 'img/undraw_feeling_proud_dark.svg';
     image3.src = 'img/undraw_conceptual_idea_dark.svg';
  }
-
  
 //Light Mode Styles
 function lightMode() {
     nav.style.backgroundColor = "rgb(255 255 255 / 50%)";
     textBox.style.backgroundColor = "rgb(0 0 0 / 50%)"; 
     toggleIcon.children[0].textContent = 'Light Mode';  //span
-    toggleIcon.children[1].classList.remove('fas-moon');  //icon
-    toggleIcon.children[1].classList.add('fas-sun');  //icon
+    toggleIcon.children[1].classList.remove('fa-moon');  //icon
+    toggleIcon.children[1].classList.add('fa-sun');  //icon
     image1.src = 'img/undraw_proud_coder_light.svg';
     image2.src = 'img/undraw_feeling_proud_light.svg';
     image3.src = 'img/undraw_conceptual_idea_light.svg';
